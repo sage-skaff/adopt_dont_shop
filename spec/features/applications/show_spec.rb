@@ -59,7 +59,7 @@ RSpec.describe 'Applications Show Page' do
     expect(page).to_not have_content('Clawdia')
 
     fill_in 'Search', with: 'Clawdia'
-    click_button 'Submit'
+    click_button 'Search'
 
     expect(page).to have_content('Clawdia')
   end

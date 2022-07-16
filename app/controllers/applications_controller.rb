@@ -1,11 +1,10 @@
 class ApplicationsController < ApplicationController
   def show
     @application = Application.find(params[:id])
+    @pets = Pet.search(params[:search]) if params[:search].present?
   end
 
-  def new 
-
-  end
+  def new; end
 
   def create
     params[:address] = "#{params[:street_address]}, #{params[:city]}, #{params[:state]} #{params[:zip_code]}"
@@ -13,9 +12,10 @@ class ApplicationsController < ApplicationController
 
     redirect_to "/applications/#{application.id}"
   end
-  
-  private 
-  def application_params 
+
+  private
+
+  def application_params
     params.permit(:name, :address, :description, :status)
   end
 end

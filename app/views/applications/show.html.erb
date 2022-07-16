@@ -10,8 +10,15 @@
 
 <h2>Add a Pet to this Application</h2>
 
-<%= form_tag '/pets', method: :get do %>
+<%= form_tag "/applications/#{@application.id}", method: :get do %>
   <%= label_tag :search %>
   <%= text_field_tag :search, params[:search] %>
-  <%= submit_tag 'Submit', name: nil %>
+  <%= submit_tag 'Search', name: nil %>
   <% end %>
+
+<% if @pets %>
+  <strong>Search Results:</strong>
+  <% @pets.each do |pet| %>
+    <p><%= link_to "#{pet.name}", "/pets/#{pet.id}" %></p>
+  <% end %>
+<% end %>
