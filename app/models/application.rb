@@ -16,4 +16,12 @@ class Application < ApplicationRecord
       app_pet.update(status: 'Pending')
     end
   end
+
+  def update_ap_status_approved(pet_id)
+    approved_pet_app = ApplicationPet.joins(:pet).where("pet_id = ?", pet_id)
+
+    approved_pet_app.update(status: 2)
+
+    ApplicationPet.where("status = ?", 2).pluck(:pet_id)
+  end
 end
