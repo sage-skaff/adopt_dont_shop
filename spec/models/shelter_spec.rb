@@ -53,10 +53,12 @@ RSpec.describe Shelter, type: :model do
     describe '#apps_pending' do 
       it 'returns Shelters with pending Applications' do 
         Application.destroy_all
-        app0 = @pet_1.applications.create!(name: 'Brigitte Bardot', street_address: '123 Main Street', city: 'Denver', state: 'CO', zip_code: '80111', description: 'I love animals!', status: 0)
-        app1 = @pet_3.applications.create!(name: 'Calliope Carson', street_address: '124 Central Avenue', city: 'Denver', state: 'CO', zip_code: '80111', description: 'I really love animals!', status: 1)
+        app0 = Application.create!(name: 'Brigitte Bardot', street_address: '123 Main Street', city: 'Denver', state: 'CO', zip_code: '80111', description: 'I love animals!', status: 0)
+        app1 = Application.create!(name: 'Calliope Carson', street_address: '124 Central Avenue', city: 'Denver', state: 'CO', zip_code: '80111', description: 'I really love animals!', status: 1)
+        ApplicationPet.create!(pet: @pet_1, application: app0, status: 0)
+        ApplicationPet.create!(pet: @pet_3, application: app1, status: 1)
 
-        expect(Shelter.apps_pending).to eq([@shelter_1])
+        expect(Shelter.apps_pending).to eq([@shelter_3])
       end
     end
   end

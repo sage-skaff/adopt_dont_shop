@@ -28,18 +28,18 @@ RSpec.describe 'Admin Applications Show Page' do
         
         within "#pet-#{pirate.id}" do 
             click_button 'Approve application for this pet'
-            save_and_open_page
+            # save_and_open_page
         end
 
         expect(current_path).to eq("/admin/applications/#{app.id}")
 
         within "#pet-#{pirate.id}" do 
-            expect(page).to_not have_button('Approve application for Pirate')
-            expect(page).to have_content('Application Approved')
+            expect(page).to_not have_button('Approve application for this pet')
+            expect(page).to have_content('This pet has been approved for adoption')
         end
 
         within "#pet-#{lucy.id}" do 
-            expect(page).to have_button('Approve application for Lucy')
+            expect(page).to have_button('Approve application for this pet')
         end
     end
 end
