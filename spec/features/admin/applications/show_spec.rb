@@ -2,6 +2,9 @@ require 'rails_helper'
 
 RSpec.describe 'Admin Applications Show Page' do 
     it 'has a button to approve the application for the specific pet' do 
+        ApplicationPet.destroy_all
+        Pet.destroy_all 
+        Application.destroy_all
         app = Application.create!(name: 'Brigitte Bardot', street_address: '123 Main Street', city: 'Denver', state: 'CO', zip_code: '80111', description: 'I love animals!', status: 1)
 
         shelter_1 = Shelter.create!(name: 'Aurora shelter', city: 'Aurora, CO', foster_program: false, rank: 9)
@@ -25,9 +28,29 @@ RSpec.describe 'Admin Applications Show Page' do
         within "#pet-#{lucy.id}" do 
             expect(page).to have_button('Approve application for this pet')
         end
-        
+    end
+
+    it 'removes the button if application has been approved' do 
+        ApplicationPet.destroy_all
+        Pet.destroy_all 
+        Application.destroy_all
+        app = Application.create!(name: 'Brigitte Bardot', street_address: '123 Main Street', city: 'Denver', state: 'CO', zip_code: '80111', description: 'I love animals!', status: 1)
+
+        shelter_1 = Shelter.create!(name: 'Aurora shelter', city: 'Aurora, CO', foster_program: false, rank: 9)
+        shelter_2 = Shelter.create!(name: 'RGV animal shelter', city: 'Harlingen, TX', foster_program: false, rank: 5)
+        shelter_3 = Shelter.create!(name: 'Fancy pets of Colorado', city: 'Denver, CO', foster_program: true, rank: 10)
+
+        pirate = shelter_1.pets.create!(name: 'Mr. Pirate', breed: 'tuxedo shorthair', age: 5, adoptable: true)
+        clawdia = shelter_1.pets.create!(name: 'Clawdia', breed: 'shorthair', age: 3, adoptable: true)
+        lucy = shelter_3.pets.create!(name: 'Lucille Bald', breed: 'sphynx', age: 8, adoptable: true)
+
+        ApplicationPet.create!(application: app, pet: pirate)
+        ApplicationPet.create!(application: app, pet: lucy)
+
+        visit "/admin/applications/#{app.id}"
+        # save_and_open_page
         within "#pet-#{pirate.id}" do 
-            click_button 'Approve application for this pet'
+            click_on 'Approve application for this pet'
             # save_and_open_page
         end
 
@@ -41,5 +64,25 @@ RSpec.describe 'Admin Applications Show Page' do
         within "#pet-#{lucy.id}" do 
             expect(page).to have_button('Approve application for this pet')
         end
+    end
+
+    it "shows that the application is 'Approved' if all PetApplications are approved" do 
+        app = Application.create!(name: 'Brigitte Bardot', street_address: '123 Main Street', city: 'Denver', state: 'CO', zip_code: '80111', description: 'I love animals!', status: 1)
+
+        shelter_1 = Shelter.create!(name: 'Aurora shelter', city: 'Aurora, CO', foster_program: false, rank: 9)
+        shelter_2 = Shelter.create!(name: 'RGV animal shelter', city: 'Harlingen, TX', foster_program: false, rank: 5)
+        shelter_3 = Shelter.create!(name: 'Fancy pets of Colorado', city: 'Denver, CO', foster_program: true, rank: 10)
+
+        pirate = shelter_1.pets.create!(name: 'Mr. Pirate', breed: 'tuxedo shorthair', age: 5, adoptable: true)
+        clawdia = shelter_1.pets.create!(name: 'Clawdia', breed: 'shorthair', age: 3, adoptable: true)
+        lucy = shelter_3.pets.create!(name: 'Lucille Bald', breed: 'sphynx', age: 8, adoptable: true)
+
+        ApplicationPet.create!(application: app, pet: pirate, status: 2)
+        ApplicationPet.create!(application: app, pet: lucy, status: 2)
+
+        visit "/admin/applications/#{app.id}"
+        # save_and_open_page
+
+        expect(page).to have_content 'Status: Accepted'
     end
 end
