@@ -27,8 +27,7 @@ RSpec.describe 'the shelter show' do
   end
 
   it 'shows that pets are no longer adoptable if another application has been approved to adopt all pets' do 
-    app1 = Application.create!(name: 'Brigitte Bardot', street_address: '123 Main Street', city: 'Denver',
-                              state: 'CO', zip_code: '80111', description: 'I love animals!', status: 1)
+    app1 = Application.create!(name: 'Brigitte Bardot', street_address: '123 Main Street', city: 'Denver', state: 'CO', zip_code: '80111', description: 'I love animals!', status: 1)
 
     app2 = Application.create!(name: 'Calliope Carson', street_address: '124 Central Avenue', city: 'Denver', state: 'CO', zip_code: '80111', description: 'I really love animals!', status: 1)
 
