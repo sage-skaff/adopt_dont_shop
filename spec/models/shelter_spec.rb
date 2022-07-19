@@ -28,7 +28,7 @@ RSpec.describe Shelter, type: :model do
   describe 'class methods' do
     describe '#search' do
       it 'returns partial matches' do
-        expect(Shelter.search("Fancy")).to eq([@shelter_3])
+        expect(Shelter.search('Fancy')).to eq([@shelter_3])
       end
     end
 
@@ -44,21 +44,25 @@ RSpec.describe Shelter, type: :model do
       end
     end
 
-    describe '#order_by_name' do 
-      it 'orders Shelters by name in alpha order' do 
+    describe '#order_by_name' do
+      it 'orders Shelters by name in alpha order' do
         expect(Shelter.order_by_name).to eq([@shelter_2, @shelter_3, @shelter_1])
       end
     end
 
-    describe '#apps_pending' do 
-      it 'returns Shelters with pending Applications' do 
+    describe '#apps_pending' do
+      it 'returns Shelters with pending Applications alphabetically' do
         Application.destroy_all
-        app0 = Application.create!(name: 'Brigitte Bardot', street_address: '123 Main Street', city: 'Denver', state: 'CO', zip_code: '80111', description: 'I love animals!', status: 0)
-        app1 = Application.create!(name: 'Calliope Carson', street_address: '124 Central Avenue', city: 'Denver', state: 'CO', zip_code: '80111', description: 'I really love animals!', status: 1)
-        ApplicationPet.create!(pet: @pet_1, application: app0, status: 0)
+        app0 = Application.create!(name: 'Brigitte Bardot', street_address: '123 Main Street', city: 'Denver',
+                                   state: 'CO', zip_code: '80111', description: 'I love animals!', status: 0)
+        app1 = Application.create!(name: 'Calliope Carson', street_address: '124 Central Avenue', city: 'Denver',
+                                   state: 'CO', zip_code: '80111', description: 'I really love animals!', status: 1)
+        pet_5 = @shelter_2.pets.create!(name: 'Bean', breed: 'husky', age: 4, adoptable: true)
+        ApplicationPet.create!(pet: @pet_1, application: app1, status: 0)
+        ApplicationPet.create!(pet: pet_5, application: app1, status: 1)
         ApplicationPet.create!(pet: @pet_3, application: app1, status: 1)
 
-        expect(Shelter.apps_pending).to eq([@shelter_3])
+        expect(Shelter.apps_pending).to eq([@shelter_3, @shelter_2])
       end
     end
   end

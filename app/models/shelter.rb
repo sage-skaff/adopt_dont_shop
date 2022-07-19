@@ -4,16 +4,17 @@ class Shelter < ApplicationRecord
   validates :city, presence: true
 
   has_many :pets, dependent: :destroy
+  has_many :application_pets, through: :pets
 
   def self.order_by_recently_created
     order(created_at: :desc)
   end
 
   def self.order_by_number_of_pets
-    select("shelters.*, count(pets.id) AS pets_count")
-      .joins("LEFT OUTER JOIN pets ON pets.shelter_id = shelters.id")
-      .group("shelters.id")
-      .order("pets_count DESC")
+    select('shelters.*, count(pets.id) AS pets_count')
+      .joins('LEFT OUTER JOIN pets ON pets.shelter_id = shelters.id')
+      .group('shelters.id')
+      .order('pets_count DESC')
   end
 
   def pet_count
@@ -33,15 +34,15 @@ class Shelter < ApplicationRecord
   end
 
   def self.order_by_name
-    Shelter.find_by_sql("SELECT * FROM shelters ORDER BY name DESC")
+    Shelter.find_by_sql('SELECT * FROM shelters ORDER BY name DESC')
   end
 
   def self.apps_pending
-    pets_with_pending_apps = Pet.joins(:application_pets).where(application_pets: {status: 1}).pluck(:id)
-    
-    shelters = pets_with_pending_apps.flat_map do |pet_id| 
-      Shelter.joins(:pets).where(pets: {id: pet_id})
-    end
-    shelters
+    # pets_with_pending_apps = Pet.joins(:application_pets).where(application_pets: { status: 1 }).pluck(:id)
+
+    # pets_with_pending_apps.flat_map do |pet_id|
+    #   Shelter.joins(:pets).where(pets: { id: pet_id })
+    # end
+    order(:name).includes(:application_pets).where(application_pets: { status: 1 }).to_a
   end
 end

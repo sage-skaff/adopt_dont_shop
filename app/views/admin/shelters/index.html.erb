@@ -17,14 +17,13 @@
     </div>
 <% end %>
 
-<div id="pending">
     <% if @pending_shelters != [] %>
         <h4>Shelters with Pending Applications</h4>
-        <ul>
-            <% @pending_shelters.each do |shelter| %>
-                <li><%= "#{shelter.name}" %></li>
+            <% @pending_shelters.each_with_index do |shelter, index| %>
+              <div id="pending-<%= index %>">
+                <p><%= "#{shelter.name}" %></p>
+                </div>
             <% end %>
-        </ul>
     <% end %>
 </div>
 
