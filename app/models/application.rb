@@ -28,6 +28,7 @@ class Application < ApplicationRecord
   def evaluate_app_status
     if join_pet_with_app_pets.all? { |pet| pet.status == 2 }
       self.update(status: 2)
+      join_pet_with_app_pets.update_all(adoptable: false)
     elsif join_pet_with_app_pets.any? { |pet| pet.status == 3 }
       self.update(status: 3)
     end
