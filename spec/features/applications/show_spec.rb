@@ -63,6 +63,7 @@ RSpec.describe 'Applications Show Page' do
   end
 
   it 'it has a button to add the pet after searching for it' do
+    Pet.destroy_all
     app = Application.create!(name: 'Brigitte Bardot', street_address: '123 Main Street', city: 'Denver', state: 'CO', zip_code: '80111', description: 'I love animals!', status: 0)
 
     shelter_1 = Shelter.create!(name: 'Aurora shelter', city: 'Aurora, CO', foster_program: false, rank: 9)
@@ -87,7 +88,7 @@ RSpec.describe 'Applications Show Page' do
     expect(page).to have_button('Adopt this Pet')
 
     click_button('Adopt this Pet')
-    # save_and_open_page
+    # save_and_open_page 
 
     expect(current_path).to eq "/applications/#{app.id}"
 
