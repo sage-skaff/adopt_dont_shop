@@ -8,7 +8,10 @@
 <% @apps_and_pets.each do |pet| %>
     <div id="pet-<%= pet.pet_id%>">
         <%= link_to "#{pet.name}", "/pets/#{pet.pet_id}" %>
-        <% if pet.status == 2 %>
+        <% if pet.adoptable == false %>
+            <p>This pet has been approved for adoption by another applicant.</p>
+            <%= button_to "Reject application for this pet", "/admin/applications/#{@application.id}", params: {rejected_pet: pet.pet_id}, method: :get %>
+        <% elsif pet.status == 2 %>
             <p>This pet has been approved for adoption</p>
         <% elsif pet.status == 3 %>
             <p>This pet has been rejected for adoption</p>
