@@ -71,6 +71,7 @@ RSpec.describe 'Admin Applications Show Page' do
     end
 
     expect(current_path).to eq("/admin/applications/#{app.id}")
+    # save_and_open_page
 
     within "#pet-#{pirate.id}" do
       expect(page).to_not have_button('Reject application for this pet')
