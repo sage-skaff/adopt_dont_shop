@@ -143,11 +143,10 @@ RSpec.describe 'Admin Applications Show Page' do
     ApplicationPet.create!(application: app2, pet: pirate)
 
     visit "/admin/applications/#{app1.id}"
-    save_and_open_page
     click_button 'Approve application for this pet'
 
     visit "/admin/applications/#{app2.id}"
-    save_and_open_page
+    # save_and_open_page
     
     expect(page).to have_button('Approve application for this pet')
     expect(page).to have_button('Reject application for this pet')
