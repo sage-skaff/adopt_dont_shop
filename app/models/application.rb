@@ -17,12 +17,20 @@ class Application < ApplicationRecord
     end
   end
 
-  def update_ap_status_approved(pet_id)
-    approved_pet_app = ApplicationPet.joins(:pet).where('pet_id = ?', pet_id)
+  def update_ap_status_approved(petid)
+    approved_pet_app = ApplicationPet.where('pet_id = ?', petid).update(status: 2)
 
-    approved_pet_app.update(status: 2)
+    ApplicationPet.where("status = ?", 2)
+  end
 
-    ApplicationPet.where('status = ?', 2).pluck(:pet_id)
+  def join_pet_with_app_pets
+    Pet.select('pets.*, application_pets.*').joins(:application_pets)
+  end
+
+  def evaluate_app_status
+    if join_pet_with_app_pets.all? { |pet| pet.status == 2 }
+      self.status = 2 
+    end
   end
 
   def update_ap_status_rejected(pet_id)
@@ -31,5 +39,6 @@ class Application < ApplicationRecord
     approved_pet_app.update(status: 3)
 
     ApplicationPet.where('status = ?', 3).pluck(:pet_id)
+
   end
 end
