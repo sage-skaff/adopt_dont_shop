@@ -10,11 +10,11 @@
         <%= link_to "#{pet.name}", "/pets/#{pet.pet_id}" %>
         <% if pet.status == 2 %>
             <p>This pet has been approved for adoption</p>
-        <% elsif @rejected_pets_id !=nil && @rejected_pets_id.include?(pet.id) %>
+        <% elsif pet.status == 3 %>
             <p>This pet has been rejected for adoption</p>
         <% else %>
             <%= button_to "Approve application for this pet", "/admin/applications/#{@application.id}", params: {approved_pet: pet.pet_id}, method: :get %>
-            <%= button_to "Reject application for this pet", "/admin/applications/#{@application.id}", params: {rejected_pet: pet}, method: :get %>
+            <%= button_to "Reject application for this pet", "/admin/applications/#{@application.id}", params: {rejected_pet: pet.pet_id}, method: :get %>
         <% end %>
         <br>
     </div>
