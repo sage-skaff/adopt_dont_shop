@@ -26,7 +26,11 @@ class Application < ApplicationRecord
   end
 
   def evaluate_app_status
-    self.status = 2 if join_pet_with_app_pets.all? { |pet| pet.status == 2 }
+    if join_pet_with_app_pets.all? { |pet| pet.status == 2 }
+      self.update(status: 2)
+    elsif join_pet_with_app_pets.any? { |pet| pet.status == 3 }
+      self.update(status: 3)
+    end
   end
 
   def update_ap_status_rejected(pet_id)
