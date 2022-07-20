@@ -48,4 +48,31 @@ RSpec.describe 'the admin shelters index' do
       expect(page).to_not have_content('RGV animal shelter')
     end
   end
+
+  it 'has links to shelter show pages' do 
+    shelter_1 = Shelter.create!(name: 'Aurora shelter', city: 'Aurora, CO', foster_program: false, rank: 9)
+    shelter_2 = Shelter.create!(name: 'RGV animal shelter', city: 'Harlingen, TX', foster_program: false, rank: 5)
+    shelter_3 = Shelter.create!(name: 'Fancy pets of Colorado', city: 'Denver, CO', foster_program: true, rank: 10)
+
+    visit '/admin/shelters'
+    save_and_open_page
+
+    within '#shelter-0' do 
+      expect(page).to have_link 'RGV animal shelter' 
+    end
+
+    within '#shelter-1' do 
+      expect(page).to have_link 'Fancy pets of Colorado'
+    end
+
+    within '#shelter-2' do
+      expect(page).to have_link 'Aurora shelter' 
+    end 
+    
+    within '#shelter-2' do 
+      click_on 'Aurora shelter' 
+    end 
+
+    expect(current_path).to eq "/admin/shelters/#{shelter_1.id}"
+  end
 end
