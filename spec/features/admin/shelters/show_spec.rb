@@ -77,4 +77,31 @@ RSpec.describe 'Admin Shelters Show Page' do
       expect(page).to_not have_content('Clawdia')
     end
   end
+
+  it 'pets in action required link to the admin application show page' do
+    app = Application.create!(name: 'Brigitte Bardot', street_address: '123 Main Street', city: 'Denver',
+                              state: 'CO', zip_code: '80111', description: 'I love animals!', status: 1)
+
+    shelter_1 = Shelter.create!(name: 'Aurora shelter', city: 'Aurora, CO', foster_program: false, rank: 9)
+
+    pirate = shelter_1.pets.create!(name: 'Mr. Pirate', breed: 'tuxedo shorthair', age: 5, adoptable: true)
+    clawdia = shelter_1.pets.create!(name: 'Clawdia', breed: 'shorthair', age: 3, adoptable: true)
+
+    ApplicationPet.create!(application: app, pet: pirate, status: 1)
+    ApplicationPet.create!(application: app, pet: clawdia, status: 1)
+
+    visit "/admin/shelters/#{shelter_1.id}"
+
+    within '#action-required' do
+      within "#pet-#{clawdia.id}" do
+        expect(page).to have_link('Application')
+      end
+
+      within "#pet-#{pirate.id}" do
+        expect(page).to have_link('Application')
+        click_link 'Application'
+      end
+    end
+    expect(current_path).to eq("/admin/applications/#{app.id}")
+  end
 end
