@@ -55,7 +55,7 @@ RSpec.describe 'the admin shelters index' do
     shelter_3 = Shelter.create!(name: 'Fancy pets of Colorado', city: 'Denver, CO', foster_program: true, rank: 10)
 
     visit '/admin/shelters'
-    save_and_open_page
+    # save_and_open_page
 
     within '#shelter-0' do 
       expect(page).to have_link 'RGV animal shelter' 

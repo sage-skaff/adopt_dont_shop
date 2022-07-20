@@ -49,4 +49,8 @@ class Shelter < ApplicationRecord
   def self.sql_find_by_id(id)
     find_by_sql("select * from shelters where shelters.id = #{id}").first
   end
+
+  def average_pet_age
+    pets.where("adoptable = ?", true).average(:age).round(2).to_f
+  end
 end
