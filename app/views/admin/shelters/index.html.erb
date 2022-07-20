@@ -10,18 +10,18 @@
 
 <% @shelters.each_with_index do |shelter, index| %>
     <div id="shelter-<%= index %>">
-        <h3><%= shelter.name %></h3>
+        <h3><%= link_to shelter.name, "/admin/shelters/#{shelter.id}" %></h3>
+    </div>
         <p>Created at: <%= shelter.created_at %></p>
         <%= link_to "Update #{shelter.name}", "/shelters/#{shelter.id}/edit" %>
         <%= link_to "Delete #{shelter.name}", "/shelters/#{shelter.id}", method: :delete %>
-    </div>
 <% end %>
 
     <% if @pending_shelters != [] %>
         <h4>Shelters with Pending Applications</h4>
             <% @pending_shelters.each_with_index do |shelter, index| %>
-              <div id="pending-<%= index %>">
-                <p><%= "#{shelter.name}" %></p>
+                <div id="pending-<%= index %>">
+                    <p><%= "#{shelter.name}" %></p>
                 </div>
             <% end %>
     <% end %>
