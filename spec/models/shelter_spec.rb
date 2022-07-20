@@ -65,6 +65,11 @@ RSpec.describe Shelter, type: :model do
         expect(Shelter.apps_pending).to eq([@shelter_3, @shelter_2])
       end
     end
+    describe '#sql_find_by_id' do
+      it 'returns Shelter with the given id' do
+        expect(Shelter.sql_find_by_id(@shelter_1.id)).to eq(@shelter_1)
+      end
+    end
   end
 
   describe 'instance methods' do
