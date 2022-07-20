@@ -152,7 +152,7 @@ RSpec.describe Shelter, type: :model do
         ApplicationPet.create!(application: app, pet: @pet_1, status: 2)
         ApplicationPet.create!(application: app, pet: @pet_2, status: 1)
         ApplicationPet.create!(application: app, pet: woof, status: 1)
-        ApplicationPet.create!(application: app, pet: ozzy, status: 2)
+        ApplicationPet.create!(application: app, pet: ozzy, status: 0)
         ApplicationPet.create!(application: app2, pet: @pet_4, status: 2)
         ApplicationPet.create!(application: app2, pet: sofia, status: 2)
         ApplicationPet.create!(application: app2, pet: trudy, status: 2)

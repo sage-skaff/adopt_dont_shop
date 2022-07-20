@@ -5,3 +5,12 @@
 <p>Number of adoptable pets: <%= @shelter.num_adoptable %></p>
 <p>Average age of adoptable pets: <%= @shelter.average_pet_age %></p>
 <p>Number of adopted pets: <%= @shelter.adopted_pets_count %></p>
+
+<div id="action-required">
+  <h3>Action Required</h3>
+  <% @shelter.pets_with_pending_apps.each do |pet| %>
+  <div id="pet-<%= pet.id %>">
+      <%= pet.name %>
+  <% end %>
+  </div>
+</div>

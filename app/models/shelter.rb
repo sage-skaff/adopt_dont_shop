@@ -51,6 +51,10 @@ class Shelter < ApplicationRecord
     order(:name).includes(:application_pets).where(application_pets: { status: 1 }).to_a
   end
 
+  def pets_with_pending_apps
+    pets.includes(:application_pets).where(application_pets: { status: 1 })
+  end
+
   def self.sql_find_by_id(id)
     find_by_sql("select * from shelters where shelters.id = #{id}").first
   end
