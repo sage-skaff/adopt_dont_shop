@@ -71,6 +71,7 @@ RSpec.describe 'the admin shelters index' do
     
     within '#shelter-2' do 
       click_on 'Aurora shelter' 
+      # save_and_open_page
     end 
 
     expect(current_path).to eq "/admin/shelters/#{shelter_1.id}"

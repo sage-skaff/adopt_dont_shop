@@ -36,7 +36,7 @@ RSpec.describe 'Admin Shelters Show Page' do
     shelter_1.pets.create!(name: 'Trudy', breed: 'hairy', age: 1, adoptable: true)
 
     visit "/admin/shelters/#{shelter_1.id}"
-    save_and_open_page
+    # save_and_open_page
 
     expect(page).to have_content("Number of adoptable pets: 4")
   end
