@@ -43,7 +43,7 @@ RSpec.describe 'Admin Shelters Show Page' do
 
   it 'shows number of pets that have been adopted' do
     app = Application.create!(name: 'Brigitte Bardot', street_address: '123 Main Street', city: 'Denver',
-                              state: 'CO', zip_code: '80111', description: 'I love animals!', status: 1)
+                              state: 'CO', zip_code: '80111', description: 'I love animals!', status: 2)
 
     shelter_1 = Shelter.create!(name: 'Aurora shelter', city: 'Aurora, CO', foster_program: false, rank: 9)
 

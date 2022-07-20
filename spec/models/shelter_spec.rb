@@ -115,13 +115,25 @@ RSpec.describe Shelter, type: :model do
 
     describe '#adopted_pets_count' do
       it 'returns the number of adopted pets' do
+        woof = @shelter_1.pets.create!(name: 'Woof', breed: 'dog', age: 12, adoptable: true)
+        ozzy = @shelter_1.pets.create!(name: 'Ozzy', breed: 'chow', age: 1, adoptable: false)
+        sofia = @shelter_1.pets.create!(name: 'Sofia', breed: 'hairy', age: 1, adoptable: false)
+        trudy = @shelter_1.pets.create!(name: 'Trudy', breed: 'hairy', age: 1, adoptable: true)
         app = Application.create!(name: 'Brigitte Bardot', street_address: '123 Main Street', city: 'Denver',
                                   state: 'CO', zip_code: '80111', description: 'I love animals!', status: 1)
 
-        ApplicationPet.create!(application: app, pet: @pet_1, status: 2)
-        ApplicationPet.create!(application: app, pet: @pet_2, status: 2)
+        app2 = Application.create!(name: 'Calliope Carson', street_address: '124 Central Avenue', city: 'Denver',
+                                   state: 'CO', zip_code: '80111', description: 'I really love animals!', status: 2)
 
-        expect(@shelter_1.adopted_pets_count).to eq 2
+        ApplicationPet.create!(application: app, pet: @pet_1, status: 2)
+        ApplicationPet.create!(application: app, pet: @pet_2, status: 1)
+        ApplicationPet.create!(application: app, pet: woof, status: 1)
+        ApplicationPet.create!(application: app, pet: ozzy, status: 2)
+        ApplicationPet.create!(application: app2, pet: @pet_4, status: 2)
+        ApplicationPet.create!(application: app2, pet: sofia, status: 2)
+        ApplicationPet.create!(application: app2, pet: trudy, status: 2)
+
+        expect(@shelter_1.adopted_pets_count).to eq 3
       end
     end
   end

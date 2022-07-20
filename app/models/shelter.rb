@@ -5,6 +5,7 @@ class Shelter < ApplicationRecord
 
   has_many :pets, dependent: :destroy
   has_many :application_pets, through: :pets
+  has_many :applications, through: :application_pets
 
   def self.order_by_recently_created
     order(created_at: :desc)
@@ -23,6 +24,10 @@ class Shelter < ApplicationRecord
 
   def adoptable_pets
     pets.where(adoptable: true)
+  end
+
+  def adopted_pets_count
+    pets.includes(:applications).where(applications: { status: 2 }).count
   end
 
   def alphabetical_pets
@@ -52,13 +57,13 @@ class Shelter < ApplicationRecord
 
   def average_pet_age
     if pets == []
-      return "No pets at this shelter"
-    else  
-      pets.where("adoptable = ?", true).average(:age).round(2).to_f
+      'No pets at this shelter'
+    else
+      pets.where('adoptable = ?', true).average(:age).round(2).to_f
     end
   end
 
   def num_adoptable
-    pets.where("adoptable =?", true).count
+    pets.where('adoptable =?', true).count
   end
 end
