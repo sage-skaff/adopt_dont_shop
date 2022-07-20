@@ -97,19 +97,31 @@ RSpec.describe Shelter, type: :model do
       end
     end
 
-    describe '#average_pet_age' do 
-      it 'returns the average age of an adoptable pet' do 
+    describe '#average_pet_age' do
+      it 'returns the average age of an adoptable pet' do
         expect(@shelter_1.average_pet_age).to eq 4
       end
 
-      it 'says no pets are in the shelter' do 
-        expect(@shelter_2.average_pet_age).to eq 'No pets at this shelter' 
+      it 'says no pets are in the shelter' do
+        expect(@shelter_2.average_pet_age).to eq 'No pets at this shelter'
       end
     end
 
-    describe '#num_adoptable' do 
-      it 'returns the number of adoptable pets' do 
+    describe '#num_adoptable' do
+      it 'returns the number of adoptable pets' do
         expect(@shelter_1.num_adoptable).to eq 2
+      end
+    end
+
+    describe '#adopted_pets_count' do
+      it 'returns the number of adopted pets' do
+        app = Application.create!(name: 'Brigitte Bardot', street_address: '123 Main Street', city: 'Denver',
+                                  state: 'CO', zip_code: '80111', description: 'I love animals!', status: 1)
+
+        ApplicationPet.create!(application: app, pet: @pet_1, status: 2)
+        ApplicationPet.create!(application: app, pet: @pet_2, status: 2)
+
+        expect(@shelter_1.adopted_pets_count).to eq 2
       end
     end
   end
