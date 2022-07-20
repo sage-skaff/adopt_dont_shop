@@ -11,6 +11,12 @@
   <% @shelter.pets_with_pending_apps.each do |pet| %>
   <div id="pet-<%= pet.id %>">
       <%= pet.name %>
+      <% pet.applications.distinct.each do |app| %>
+      <div id="app-<%= app.id %>">
+        <%= link_to "Application #{app.id}", "/admin/applications/#{app.id}" %>
+      <% end %>
+      </div>
+      <br>
   <% end %>
   </div>
 </div>

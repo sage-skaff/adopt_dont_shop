@@ -88,18 +88,14 @@ RSpec.describe 'Admin Shelters Show Page' do
     clawdia = shelter_1.pets.create!(name: 'Clawdia', breed: 'shorthair', age: 3, adoptable: true)
 
     ApplicationPet.create!(application: app, pet: pirate, status: 1)
-    ApplicationPet.create!(application: app, pet: clawdia, status: 1)
+    ApplicationPet.create!(application: app, pet: clawdia, status: 2)
 
     visit "/admin/shelters/#{shelter_1.id}"
 
     within '#action-required' do
-      within "#pet-#{clawdia.id}" do
-        expect(page).to have_link('Application')
-      end
-
       within "#pet-#{pirate.id}" do
-        expect(page).to have_link('Application')
-        click_link 'Application'
+        expect(page).to have_link("Application #{app.id}")
+        click_link "Application #{app.id}"
       end
     end
     expect(current_path).to eq("/admin/applications/#{app.id}")
